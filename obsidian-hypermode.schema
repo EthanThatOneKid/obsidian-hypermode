@@ -1,0 +1,14 @@
+namespace dc: <http://purl.org/dc/terms/>
+namespace xsd: <http://www.w3.org/2001/XMLSchema#>
+
+type File {
+    path: string @index(exact) @upsert @rdf(predicate: dc:hasPart, type: xsd:string)
+    name: string @rdf(predicate: dc:title, type: xsd:string) 
+    parentPath: string @index(exact) @rdf(predicate: dc:isPartOf, type: xsd:string) 
+    parentName: string @rdf(predicate: dc:isPartOf, type: xsd:string) 
+    basename: string @index(exact) @upsert @rdf(predicate: dc:identifier, type: xsd:string)
+    extension: string @index(exact) @upsert @rdf(predicate: dc:format, type: xsd:string)
+    ctime: float @index(float) @rdf(predicate: dc:created, type: xsd:dateTime) 
+    mtime: float @index(float) @rdf(predicate: dc:modified, type: xsd:dateTime) 
+    size: int @index(int) @rdf(predicate: dc:size, type: xsd:integer) 
+}

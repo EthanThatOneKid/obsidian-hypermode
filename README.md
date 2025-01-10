@@ -13,8 +13,8 @@ This repository was generated from
 - Install NodeJS, then run `deno task prebuild` in the command line under your
   repository folder.
 - Run `deno task dev` to compile run the plugin in watch mode.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be
-  automatically compiled into `main.js`.
+- Make changes to `/src/main.ts` (or create new `.ts` files). Those changes
+  should be automatically compiled into `main.js`.
 - Reload Obsidian to load the new version of your plugin.
 - Enable plugin in settings window.
 - For updates to the Obsidian API run `deno task outdated` in the command line
