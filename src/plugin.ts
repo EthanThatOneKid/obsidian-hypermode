@@ -22,9 +22,15 @@ export class ObsidianHypermodePlugin extends Plugin {
       const dgraphClient = new DgraphClient(clientStub);
 
       const response = await dgraphClient.newTxn().query(
-        `{ persistedQueries(func: type(dgraph.graphql.persisted_query)) { uid dgraph.graphql.p_query } }`,
+        // Noop query that tests the connection.
+        `{
+          persistedQueries(func: has(_predicate_)) {
+            uid
+          }
+        }`
       );
       const result = response.getJson();
+      console.log({ result });
       if (result.persistedQueries.length > 0) {
         new Notice("Dgraph client is working as expected.");
       } else {
