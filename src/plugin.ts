@@ -9,34 +9,37 @@ import {
 export class ObsidianHypermodePlugin extends Plugin {
   public settings: ObsidianHypermodePluginSettings;
 
-  async onload() {
+  public async onload() {
     await this.loadSettings();
 
     this.addRibbonIcon("info", "WIP", async () => {
+      console.log({ settings: this.settings });
+
       const clientStub = clientStubFromCloudEndpoint(
         this.settings.dgraphCloudEndpoint,
         this.settings.dgraphCloudApiKey,
       );
       const dgraphClient = new DgraphClient(clientStub);
 
-      // TODO: Set up dgraph schema.
-      // https://github.com/dgraph-io/dgraph-js?tab=readme-ov-file#using-a-client
-      //
-
-      // TODO: Test that the dgraph client works.
-      await dgraphClient.newTxn().query(`{ me(func: uid(0x1)) { name } }`);
-
-      new Notice("Success");
+      const response = await dgraphClient.newTxn().query(
+        `{ persistedQueries(func: type(dgraph.graphql.persisted_query)) { uid dgraph.graphql.p_query } }`,
+      );
+      const result = response.getJson();
+      if (result.persistedQueries.length > 0) {
+        new Notice("Dgraph client is working as expected.");
+      } else {
+        new Notice("Dgraph client query returned no results.");
+      }
     });
 
     this.addSettingTab(new ObsidianHypermodeSettingTab(this.app, this));
   }
 
-  async loadSettings() {
+  public async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
   }
 
-  async saveSettings() {
+  public async saveSettings() {
     await this.saveData(this.settings);
   }
 }

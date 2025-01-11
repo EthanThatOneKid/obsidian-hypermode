@@ -18,6 +18,7 @@ export class ObsidianHypermodeSettingTab extends PluginSettingTab {
 
   public display(): void {
     this.containerEl.empty();
+
     new Setting(this.containerEl)
       .setName("Dgraph Cloud Endpoint")
       .setDesc("Endpoint for Dgraph Cloud")
