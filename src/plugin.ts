@@ -1,5 +1,10 @@
+import { readFile } from "node:fs/promises";
 import { Notice, Plugin } from "obsidian";
-import { clientStubFromCloudEndpoint, DgraphClient } from "dgraph-js";
+import {
+  clientStubFromCloudEndpoint,
+  DgraphClient,
+  Operation,
+} from "dgraph-js";
 import {
   DEFAULT_SETTINGS,
   ObsidianHypermodePluginSettings,
@@ -8,37 +13,25 @@ import {
 
 export class ObsidianHypermodePlugin extends Plugin {
   public settings: ObsidianHypermodePluginSettings;
+  private dgraphClient: DgraphClient;
 
   public async onload() {
+    this.addSettingTab(new ObsidianHypermodeSettingTab(this.app, this));
+
     await this.loadSettings();
+    this.dgraphClient = new DgraphClient(clientStubFromCloudEndpoint(
+      this.settings.dgraphCloudEndpoint,
+      this.settings.dgraphCloudApiKey,
+    ));
+
+    const op = new Operation();
+    op.setSchema(await readFile("./src/dgraph.schema", "utf-8"));
+    await this.dgraphClient.alter(op);
 
     this.addRibbonIcon("info", "WIP", async () => {
       console.log({ settings: this.settings });
-
-      const clientStub = clientStubFromCloudEndpoint(
-        this.settings.dgraphCloudEndpoint,
-        this.settings.dgraphCloudApiKey,
-      );
-      const dgraphClient = new DgraphClient(clientStub);
-
-      const response = await dgraphClient.newTxn().query(
-        // Noop query that tests the connection.
-        `{
-          persistedQueries(func: has(_predicate_)) {
-            uid
-          }
-        }`
-      );
-      const result = response.getJson();
-      console.log({ result });
-      if (result.persistedQueries.length > 0) {
-        new Notice("Dgraph client is working as expected.");
-      } else {
-        new Notice("Dgraph client query returned no results.");
-      }
+      new Notice("WIP");
     });
-
-    this.addSettingTab(new ObsidianHypermodeSettingTab(this.app, this));
   }
 
   public async loadSettings() {
