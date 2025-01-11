@@ -1,4 +1,3 @@
-import { readFile } from "node:fs/promises";
 import { Notice, Plugin } from "obsidian";
 import {
   clientStubFromCloudEndpoint,
@@ -24,8 +23,15 @@ export class ObsidianHypermodePlugin extends Plugin {
       this.settings.dgraphCloudApiKey,
     ));
 
+    const schemaPath = `${this.manifest.dir}/src/dgraph.schema`;
+    const schemaString = await this.app.vault.adapter.read(schemaPath);
+
+    // TODO: Write data to dgraph.
+
+    // https://github.com/dgraph-io/dgraph-js?tab=readme-ov-file#altering-the-database
     const op = new Operation();
-    op.setSchema(await readFile("./src/dgraph.schema", "utf-8"));
+    op.setSchema(schemaString);
+    op.setDropAll(true);
     await this.dgraphClient.alter(op);
 
     this.addRibbonIcon("info", "WIP", async () => {
