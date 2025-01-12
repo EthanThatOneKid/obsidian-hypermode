@@ -1,9 +1,5 @@
+import { Client, createClient } from "graphql-http";
 import { Notice, Plugin } from "obsidian";
-import {
-  clientStubFromCloudEndpoint,
-  DgraphClient,
-  Operation,
-} from "dgraph-js";
 import {
   DEFAULT_SETTINGS,
   ObsidianHypermodePluginSettings,
@@ -12,27 +8,17 @@ import {
 
 export class ObsidianHypermodePlugin extends Plugin {
   public settings: ObsidianHypermodePluginSettings;
-  private dgraphClient: DgraphClient;
+  public gqlClient: Client;
 
   public async onload() {
     this.addSettingTab(new ObsidianHypermodeSettingTab(this.app, this));
 
     await this.loadSettings();
-    this.dgraphClient = new DgraphClient(clientStubFromCloudEndpoint(
-      this.settings.dgraphCloudEndpoint,
-      this.settings.dgraphCloudApiKey,
-    ));
 
-    const schemaPath = `${this.manifest.dir}/src/dgraph.schema`;
-    const schemaString = await this.app.vault.adapter.read(schemaPath);
-
-    // TODO: Write data to dgraph.
-
-    // https://github.com/dgraph-io/dgraph-js?tab=readme-ov-file#altering-the-database
-    const op = new Operation();
-    op.setSchema(schemaString);
-    op.setDropAll(true);
-    await this.dgraphClient.alter(op);
+    // TODO: Write data to modus.
+    // this.gqlClient = createClient({
+    // https://github.com/graphql/graphql-http?tab=readme-ov-file#use-the-client
+    // });
 
     this.addRibbonIcon("info", "WIP", async () => {
       console.log({ settings: this.settings });
