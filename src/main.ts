@@ -1,1 +1,1 @@
-export { ObsidianHypermodePlugin as default } from "./plugin";
+export { ObsidianModusPlugin as default } from "./plugin";

@@ -1,18 +1,16 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
-import { ObsidianHypermodePlugin } from "./plugin";
+import { ObsidianModusPlugin } from "./plugin";
 
-export interface ObsidianHypermodePluginSettings {
-  dgraphCloudEndpoint: string;
-  dgraphCloudApiKey: string;
+export interface ObsidianModusPluginSettings {
+  gqlEndpoint: string;
 }
 
-export const DEFAULT_SETTINGS: Partial<ObsidianHypermodePluginSettings> = {
-  dgraphCloudEndpoint: "",
-  dgraphCloudApiKey: "",
+export const DEFAULT_SETTINGS: Partial<ObsidianModusPluginSettings> = {
+  gqlEndpoint: "",
 };
 
-export class ObsidianHypermodeSettingTab extends PluginSettingTab {
-  public constructor(app: App, private plugin: ObsidianHypermodePlugin) {
+export class ObsidianModusSettingTab extends PluginSettingTab {
+  public constructor(app: App, private plugin: ObsidianModusPlugin) {
     super(app, plugin);
   }
 
@@ -20,27 +18,14 @@ export class ObsidianHypermodeSettingTab extends PluginSettingTab {
     this.containerEl.empty();
 
     new Setting(this.containerEl)
-      .setName("Dgraph Cloud Endpoint")
-      .setDesc("Endpoint for Dgraph Cloud")
+      .setName("GraphQL Endpoint")
+      .setDesc("Endpoint for your GraphQL server")
       .addText((text) =>
         text
-          .setPlaceholder("https://cloud.dgraph.io/graphql")
-          .setValue(this.plugin.settings.dgraphCloudEndpoint)
+          .setPlaceholder("http://localhost:8080/graphql")
+          .setValue(this.plugin.settings.gqlEndpoint)
           .onChange(async (value) => {
-            this.plugin.settings.dgraphCloudEndpoint = value;
-            await this.plugin.saveSettings();
-          })
-      );
-
-    new Setting(this.containerEl)
-      .setName("Dgraph Cloud API Key")
-      .setDesc("API key for Dgraph Cloud")
-      .addText((text) =>
-        text
-          .setPlaceholder("<api-key>")
-          .setValue(this.plugin.settings.dgraphCloudApiKey)
-          .onChange(async (value) => {
-            this.plugin.settings.dgraphCloudApiKey = value;
+            this.plugin.settings.gqlEndpoint = value;
             await this.plugin.saveSettings();
           })
       );

@@ -11,7 +11,6 @@
     "npm:esbuild@~0.24.2": "0.24.2",
     "npm:eslint@^9.17.0": "9.17.0",
     "npm:globals@^15.14.0": "15.14.0",
-    "npm:graphql-http@^1.22.3": "1.22.3_graphql@16.9.0",
     "npm:obsidian@^1.7.2": "1.7.2_@codemirror+state@6.5.0_@codemirror+view@6.36.2",
     "npm:tslib@^2.8.1": "2.8.1",
     "npm:typescript@^5.7.3": "5.7.3"
@@ -956,15 +955,6 @@
     "graphemer@1.4.0": {
       "integrity": "sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag=="
     },
-    "graphql-http@1.22.3_graphql@16.9.0": {
-      "integrity": "sha512-sgUz/2DZt+QvY6WrpAsAXUvhnIkp2eX9jN78V8DAtFcpZi/nfDrzDt2byYjyoJzRcWuqhE0K63g1QMewt73U6A==",
-      "dependencies": [
-        "graphql"
-      ]
-    },
-    "graphql@16.9.0": {
-      "integrity": "sha512-GGTKBX4SD7Wdb8mqeDLni2oaRGYQWjWHGKPQ24ZMnUtKfcsVoiv4uX8+LJr1K6U5VW2Lu1BwJnj7uiori0YtRw=="
-    },
     "has-flag@3.0.0": {
       "integrity": "sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw=="
     },
@@ -1453,7 +1443,6 @@
         "npm:esbuild@~0.24.2",
         "npm:eslint@^9.17.0",
         "npm:globals@^15.14.0",
-        "npm:graphql-http@^1.22.3",
         "npm:obsidian@^1.7.2",
         "npm:tslib@^2.8.1",
         "npm:typescript@^5.7.3"

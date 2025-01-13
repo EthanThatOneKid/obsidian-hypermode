@@ -1,25 +1,41 @@
-import { Client, createClient } from "graphql-http";
 import { Notice, Plugin } from "obsidian";
 import {
   DEFAULT_SETTINGS,
-  ObsidianHypermodePluginSettings,
-  ObsidianHypermodeSettingTab,
+  ObsidianModusPluginSettings,
+  ObsidianModusSettingTab,
 } from "./settings";
+import { fetchAddFiles, fetchAlterSchema } from "./modus";
+import { fetchQueryFiles } from "./modus/query-files";
 
-export class ObsidianHypermodePlugin extends Plugin {
-  public settings: ObsidianHypermodePluginSettings;
-  public gqlClient: Client;
+export class ObsidianModusPlugin extends Plugin {
+  public settings: ObsidianModusPluginSettings;
 
   public async onload() {
-    this.addSettingTab(new ObsidianHypermodeSettingTab(this.app, this));
-
     await this.loadSettings();
 
     // TODO: Write data to modus.
-    // this.gqlClient = createClient({
-    // https://github.com/graphql/graphql-http?tab=readme-ov-file#use-the-client
-    // });
+    await fetchAlterSchema();
 
+    const result0 = await fetchAddFiles({
+      files: [
+        {
+          uid: "0123456789",
+          path: "./example.md",
+          fileName: "example.md",
+          fileExtension: "md",
+          modifiedAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
+          fileContent: "# Example\n\nThis is an example.\n",
+          dType: ["File"],
+        },
+      ],
+    });
+    console.log({ result0 });
+
+    const result1 = await fetchQueryFiles();
+    console.log({ result1 });
+
+    await this.addSettingTab(new ObsidianModusSettingTab(this.app, this));
     this.addRibbonIcon("info", "WIP", async () => {
       console.log({ settings: this.settings });
       new Notice("WIP");
